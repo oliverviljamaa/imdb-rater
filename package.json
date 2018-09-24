@@ -10,6 +10,7 @@
     "react-scripts": "1.1.5"
   },
   "scripts": {
+    "precommit": "lint-staged",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
@@ -19,6 +20,14 @@
     "eslint-config-airbnb": "^15.0.2",
     "eslint-config-prettier": "^3.1.0",
     "eslint-plugin-prettier": "^2.6.2",
+    "husky": "^1.0.0-rc.15",
+    "lint-staged": "^7.3.0",
     "prettier": "^1.14.3"
+  },
+  "lint-staged": {
+    "src/**/*.js": [
+      "eslint --fix src",
+      "git add"
+    ]
   }
 }
