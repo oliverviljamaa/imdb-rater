@@ -10,7 +10,6 @@
     "react-scripts": "1.1.5"
   },
   "scripts": {
-    "precommit": "lint-staged",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
@@ -29,5 +28,10 @@
       "eslint --fix src",
       "git add"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
