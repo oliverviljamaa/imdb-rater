@@ -12,7 +12,7 @@ describe('Main', () => {
   beforeEach(() => {
     component = shallow(
       <Main
-        cookie={''}
+        cookie=""
         loadingMovies={false}
         movie={aMovie()}
         ratingMovie={false}

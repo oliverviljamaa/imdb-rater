@@ -19,7 +19,9 @@ export default class App extends Component {
   };
 
   componentWillMount() {
-    if (this.state.cookie) {
+    const { cookie } = this.state;
+
+    if (cookie) {
       this.loadMovies();
     }
   }
@@ -36,19 +38,25 @@ export default class App extends Component {
   };
 
   loadMoviesAndSaveCookie = () => {
+    const { cookie } = this.state;
+
     this.loadMovies();
-    saveCookie(this.state.cookie);
+    saveCookie(cookie);
   };
 
   removeFirstMovieFromMovies() {
-    const [, ...moviesToRate] = this.state.moviesToRate;
+    const { moviesToRate: currentMoviesToRate } = this.state;
+
+    const [, ...moviesToRate] = currentMoviesToRate;
     this.setState({ moviesToRate });
   }
 
   async loadMovies() {
+    const { cookie } = this.state;
+
     this.setState({ loadingMovies: true });
     try {
-      const moviesToRate = await getMovies(AMOUNT_OF_MOVIES, this.state.cookie);
+      const moviesToRate = await getMovies(AMOUNT_OF_MOVIES, cookie);
       this.setState({ loadingMovies: false, moviesToRate, error: null });
     } catch (error) {
       this.setState({ loadingMovies: false, error: error.message });

@@ -150,7 +150,9 @@ describe('App', () => {
 
     describe('on error', () => {
       it('passes movies loading flag to main as true while loading', done => {
-        getMovies.mockReturnValue(Promise.reject({}));
+        getMovies.mockImplementation(async () => {
+          throw new Error('An error');
+        });
 
         expect(loadingMovies()).toBe(false);
         action();
@@ -162,7 +164,9 @@ describe('App', () => {
       });
 
       it('passes error message as error to main', done => {
-        getMovies.mockReturnValue(Promise.reject({ message: 'An error' }));
+        getMovies.mockImplementation(async () => {
+          throw new Error('An error');
+        });
 
         action();
         process.nextTick(() => {

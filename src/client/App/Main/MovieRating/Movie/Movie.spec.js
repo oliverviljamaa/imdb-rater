@@ -6,7 +6,7 @@ import Movie from '.';
 describe('Movie', () => {
   let component;
   beforeEach(() => {
-    component = shallow(<Movie title={'A title'} posterURL={'https://imdb.com/image.jpg'} />);
+    component = shallow(<Movie title="A title" posterURL="https://imdb.com/image.jpg" />);
   });
 
   it('has title', () => {

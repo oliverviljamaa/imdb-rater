@@ -2,10 +2,12 @@ import { saveCookie, loadCookie } from './local';
 
 describe('Local storage', () => {
   beforeEach(() => {
-    window.localStorage = {
-      setItem: jest.fn(),
-      getItem: jest.fn(),
-    };
+    Object.defineProperty(window, 'localStorage', {
+      value: {
+        setItem: jest.fn(),
+        getItem: jest.fn(),
+      },
+    });
   });
 
   it('saves cookie in local storage under key cookie', () => {

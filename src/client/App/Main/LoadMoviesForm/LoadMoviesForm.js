@@ -8,16 +8,18 @@ const LoadMoviesForm = ({ cookie, onChangeCookie, onSubmit }) => (
       onSubmit();
     }}
   >
-    <label htmlFor="cookie">IMDb cookie</label>
-    <input
-      type="text"
-      id="cookie"
-      required
-      value={cookie}
-      onChange={event => {
-        onChangeCookie(event.target.value);
-      }}
-    />
+    <label htmlFor="cookie">
+      IMDb cookie
+      <input
+        type="text"
+        id="cookie"
+        required
+        value={cookie}
+        onChange={event => {
+          onChangeCookie(event.target.value);
+        }}
+      />
+    </label>
 
     <button type="submit">Get movies</button>
   </form>

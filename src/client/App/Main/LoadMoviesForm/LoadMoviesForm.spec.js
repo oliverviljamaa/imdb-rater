@@ -7,7 +7,7 @@ describe('Load movies form', () => {
   let component;
   beforeEach(() => {
     component = shallow(
-      <LoadMoviesForm cookie={''} onChangeCookie={jest.fn()} onSubmit={jest.fn()} />,
+      <LoadMoviesForm cookie="" onChangeCookie={jest.fn()} onSubmit={jest.fn()} />,
     );
   });
 

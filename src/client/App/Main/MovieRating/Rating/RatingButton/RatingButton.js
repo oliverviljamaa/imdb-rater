@@ -9,6 +9,7 @@ const RatingButton = ({ rating, onRate, disabled }) => (
       onRate(rating);
     }}
     disabled={disabled}
+    type="button"
   >
     {rating}
   </button>
