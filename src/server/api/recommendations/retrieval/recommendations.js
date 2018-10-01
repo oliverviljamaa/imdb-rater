@@ -1,8 +1,8 @@
 const fetch = require('node-fetch');
-const { JSDOM } = require('jsdom');
 
 const { API_URL, MAX_AMOUNT, MAX_AMOUNT_PER_REQUEST } = require('./constants');
 const { InvalidCookieError } = require('./errors');
+const parseHTMLForRecommendations = require('./parsing');
 
 module.exports = async function getRecommendations(amount, cookie) {
   const amountToRequest = Math.min(amount, MAX_AMOUNT);
@@ -30,7 +30,7 @@ function getIndexesForNumberOfNeededRequests(numberOfNeededRequests) {
 
 async function getRecommendationsForPage(page, cookie) {
   const html = await getRecommendationsHTMLForPage(page, cookie);
-  return getRecommendationsFromHTML(html);
+  return parseHTMLForRecommendations(html);
 }
 
 async function getRecommendationsHTMLForPage(page, cookie) {
@@ -48,21 +48,6 @@ async function getRecommendationsHTMLForPage(page, cookie) {
   }
 
   return response.text();
-}
-
-function getRecommendationsFromHTML(html) {
-  const {
-    window: { document },
-  } = new JSDOM(html);
-
-  return Array.from(document.querySelectorAll('.rec_page [data-tconst]')).map(element => {
-    const id = element.getAttribute('data-tconst');
-    const img = element.querySelector('img');
-    const posterURL = img ? img.getAttribute('loadlate') : null;
-    const title = img ? img.getAttribute('alt') : null;
-
-    return { id, title, posterURL };
-  });
 }
 
 function flatten(array) {

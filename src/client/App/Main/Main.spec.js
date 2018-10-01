@@ -128,6 +128,11 @@ describe('Main', () => {
   }
 
   function aMovie() {
-    return { id: 'tt1234567', title: 'A title', posterURL: 'https://imdb.com/image.jpg' };
+    return {
+      id: 'tt1234567',
+      title: 'A title',
+      posterURL: 'https://imdb.com/image.jpg',
+      authKey: 'authKey for tt1234567',
+    };
   }
 });

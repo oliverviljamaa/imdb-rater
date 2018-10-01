@@ -30,9 +30,11 @@ export default class App extends Component {
     this.setState({ cookie });
   };
 
-  rateAndRemoveMovie = async (id, rating) => {
+  rateAndRemoveMovie = async (id, rating, authKey) => {
+    const { cookie } = this.state;
+
     this.setState({ ratingMovie: true });
-    await rateMovie(id, rating);
+    await rateMovie(id, rating, authKey, cookie);
     this.removeFirstMovieFromMovies();
     this.setState({ ratingMovie: false });
   };

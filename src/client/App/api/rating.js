@@ -1,9 +1,12 @@
-export default function rateMovie(id, rating) {
-  // TODO: Actually rate movies
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve();
-      console.log(`Rated movie ${id}: ${rating}`);
-    }, 1000);
+export default async function rateMovie(id, rating, authKey, cookie) {
+  const response = await fetch(`/api/ratings/${id}`, {
+    method: 'POST',
+    body: JSON.stringify({ rating, authKey, cookie }),
+    headers: { 'Content-type': 'application/json' },
   });
+
+  if (!response.ok) {
+    const json = await response.json();
+    throw new Error(json.message);
+  }
 }

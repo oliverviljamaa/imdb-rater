@@ -14,6 +14,7 @@ describe('Movie rating', () => {
           id: 'tt1234567',
           title: 'Some title',
           posterURL: 'https://imdb.com/image.jpg',
+          authKey: 'authKey for tt1234567',
         }}
         onRateMovie={jest.fn()}
         ratingMovie={false}
@@ -29,13 +30,13 @@ describe('Movie rating', () => {
     expect(movie().prop('posterURL')).toBe('https://imdb.com/image.jpg');
   });
 
-  it('invokes movie rating handler with id and rating when movie is rated', () => {
+  it('invokes movie rating handler with id and rating and auth key when movie is rated', () => {
     const onRateMovie = jest.fn();
     component.setProps({ onRateMovie });
 
     expect(onRateMovie).not.toBeCalled();
     rating().simulate('rate', 5);
-    expect(onRateMovie).toBeCalledWith('tt1234567', 5);
+    expect(onRateMovie).toBeCalledWith('tt1234567', 5, 'authKey for tt1234567');
   });
 
   it('passes rating it should not be disabled when not rating movie', () => {

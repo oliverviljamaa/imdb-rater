@@ -5,7 +5,7 @@ import Movie from './Movie';
 import Rating from './Rating';
 
 const MovieRating = ({ movie, onRateMovie, ratingMovie }) => {
-  const { id, title, posterURL } = movie;
+  const { id, title, posterURL, authKey } = movie;
 
   return (
     <Fragment>
@@ -13,7 +13,7 @@ const MovieRating = ({ movie, onRateMovie, ratingMovie }) => {
 
       <Rating
         onRate={rating => {
-          onRateMovie(id, rating);
+          onRateMovie(id, rating, authKey);
         }}
         disabled={ratingMovie}
       />
@@ -26,6 +26,7 @@ MovieRating.propTypes = {
     id: Types.string.isRequired,
     title: Types.string.isRequired,
     posterURL: Types.string.isRequired,
+    authKey: Types.string.isRequired,
   }).isRequired,
   onRateMovie: Types.func.isRequired,
   ratingMovie: Types.bool.isRequired,

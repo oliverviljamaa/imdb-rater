@@ -93,17 +93,18 @@ describe('App', () => {
 
       getMovies.mockReturnValue(Promise.resolve([{ id: 1 }, { id: 2 }]));
       clickOnLoadMovies();
+      changeCookie('a-cookie');
     });
 
-    it('rates movie with id and rating', () => {
+    it('rates movie with id and rating and auth key and cookie', () => {
       expect(rateMovie).not.toBeCalled();
-      rateMovieFromMain('tt1234567', 6);
-      expect(rateMovie).toBeCalledWith('tt1234567', 6);
+      rateMovieFromMain('tt1234567', 6, 'authKey for tt1234567');
+      expect(rateMovie).toBeCalledWith('tt1234567', 6, 'authKey for tt1234567', 'a-cookie');
     });
 
     it('passes rating movie flag to main as true while loading', done => {
       expect(ratingMovie()).toBe(false);
-      rateMovieFromMain('tt1234567', 6);
+      rateMovieFromMain('tt1234567', 6, 'authKey for tt1234567');
       expect(ratingMovie()).toBe(true);
       process.nextTick(() => {
         expect(ratingMovie()).toBe(false);
@@ -113,7 +114,7 @@ describe('App', () => {
 
     it('passes next movie to main after rating', done => {
       expect(movie()).toEqual({ id: 1 });
-      rateMovieFromMain('tt1234567', 6);
+      rateMovieFromMain('tt1234567', 6, 'authKey for tt1234567');
       process.nextTick(() => {
         expect(movie()).toEqual({ id: 2 });
         done();
@@ -205,8 +206,8 @@ describe('App', () => {
     main().simulate('loadMoviesClick');
   }
 
-  function rateMovieFromMain(id, rating) {
-    main().simulate('rateMovie', id, rating);
+  function rateMovieFromMain(id, rating, authKey) {
+    main().simulate('rateMovie', id, rating, authKey);
   }
 
   function ratingMovie() {
