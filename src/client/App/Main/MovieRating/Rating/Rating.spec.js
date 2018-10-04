@@ -3,11 +3,12 @@ import { shallow } from 'enzyme';
 
 import Rating from '.';
 import RatingButton from './RatingButton';
+import NextButton from './NextButton';
 
 describe('Rating', () => {
   let component;
   beforeEach(() => {
-    component = shallow(<Rating onRate={jest.fn()} disabled={false} />);
+    component = shallow(<Rating onRate={jest.fn()} disabled={false} onNext={jest.fn()} />);
   });
 
   it('has rating buttons with ratings from 1 to 10', () => {
@@ -40,6 +41,20 @@ describe('Rating', () => {
     expect(allButtonsAreDisabled()).toBe(true);
   });
 
+  it('passes next handler to next button as click callback', () => {
+    const onNext = jest.fn();
+    component.setProps({ onNext });
+    expect(nextButton().prop('onClick')).toBe(onNext);
+  });
+
+  it('disables next button when should', () => {
+    component.setProps({ disabled: false });
+    expect(nextButton().prop('disabled')).toBe(false);
+
+    component.setProps({ disabled: true });
+    expect(nextButton().prop('disabled')).toBe(true);
+  });
+
   function ratingButtons() {
     return component.find(RatingButton);
   }
@@ -54,5 +69,9 @@ describe('Rating', () => {
 
   function allButtonsHavePropAsValue(prop, value) {
     return ratingButtons().everyWhere(button => button.prop(prop) === value);
+  }
+
+  function nextButton() {
+    return component.find(NextButton);
   }
 });

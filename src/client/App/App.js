@@ -46,12 +46,12 @@ export default class App extends Component {
     saveCookie(cookie);
   };
 
-  removeFirstMovieFromMovies() {
+  removeFirstMovieFromMovies = () => {
     const { moviesToRate: currentMoviesToRate } = this.state;
 
     const [, ...moviesToRate] = currentMoviesToRate;
     this.setState({ moviesToRate });
-  }
+  };
 
   async loadMovies() {
     const { cookie } = this.state;
@@ -81,6 +81,7 @@ export default class App extends Component {
           onChangeCookie={this.setCookie}
           onLoadMoviesClick={this.loadMoviesAndSaveCookie}
           onRateMovie={this.rateAndRemoveMovie}
+          onNextMovie={this.removeFirstMovieFromMovies}
         />
       </Fragment>
     );

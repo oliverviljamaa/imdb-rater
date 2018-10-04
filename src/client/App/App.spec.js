@@ -122,6 +122,19 @@ describe('App', () => {
     });
   });
 
+  describe('on next movie call', () => {
+    beforeEach(() => {
+      getMovies.mockReturnValue(Promise.resolve([{ id: 1 }, { id: 2 }]));
+      clickOnLoadMovies();
+    });
+
+    it('passes next movie to main', () => {
+      expect(movie()).toEqual({ id: 1 });
+      nextMovieFromMain();
+      expect(movie()).toEqual({ id: 2 });
+    });
+  });
+
   function movieLoadingAssertionsForActionAndCookieAndMovies(action, expectedCookie, movies) {
     it('gets 100 movies with latest cookie', () => {
       expect(getMovies).not.toBeCalled();
@@ -212,5 +225,9 @@ describe('App', () => {
 
   function ratingMovie() {
     return main().prop('ratingMovie');
+  }
+
+  function nextMovieFromMain() {
+    main().simulate('nextMovie');
   }
 });

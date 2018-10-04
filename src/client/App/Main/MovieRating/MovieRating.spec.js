@@ -18,6 +18,7 @@ describe('Movie rating', () => {
         }}
         onRateMovie={jest.fn()}
         ratingMovie={false}
+        onNextMovie={jest.fn()}
       />,
     );
   });
@@ -47,6 +48,12 @@ describe('Movie rating', () => {
   it('passes rating it should be disabled when rating movie', () => {
     component.setProps({ ratingMovie: true });
     expect(rating().prop('disabled')).toBe(true);
+  });
+
+  it('passes next movie handler to rating', () => {
+    const onNextMovie = jest.fn();
+    component.setProps({ onNextMovie });
+    expect(rating().prop('onNext')).toBe(onNextMovie);
   });
 
   function movie() {

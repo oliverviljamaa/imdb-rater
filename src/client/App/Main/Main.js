@@ -15,6 +15,7 @@ const Main = ({
   onChangeCookie,
   onLoadMoviesClick,
   onRateMovie,
+  onNextMovie,
 }) => {
   const showLoader = loadingMovies;
   const showError = !loadingMovies && error;
@@ -30,7 +31,12 @@ const Main = ({
       {showLoader && <Loader />}
       {showError && <Error message={error} />}
       {showMovieRating && (
-        <MovieRating movie={movie} onRateMovie={onRateMovie} ratingMovie={ratingMovie} />
+        <MovieRating
+          movie={movie}
+          onRateMovie={onRateMovie}
+          ratingMovie={ratingMovie}
+          onNextMovie={onNextMovie}
+        />
       )}
     </main>
   );
@@ -45,6 +51,7 @@ Main.propTypes = {
   onChangeCookie: Types.func.isRequired,
   onLoadMoviesClick: Types.func.isRequired,
   onRateMovie: Types.func.isRequired,
+  onNextMovie: Types.func.isRequired,
 };
 
 Main.defaultProps = {

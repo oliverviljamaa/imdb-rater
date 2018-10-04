@@ -4,7 +4,7 @@ import Types from 'prop-types';
 import Movie from './Movie';
 import Rating from './Rating';
 
-const MovieRating = ({ movie, onRateMovie, ratingMovie }) => {
+const MovieRating = ({ movie, onRateMovie, ratingMovie, onNextMovie }) => {
   const { id, title, posterURL, authKey } = movie;
 
   return (
@@ -15,6 +15,7 @@ const MovieRating = ({ movie, onRateMovie, ratingMovie }) => {
         onRate={rating => {
           onRateMovie(id, rating, authKey);
         }}
+        onNext={onNextMovie}
         disabled={ratingMovie}
       />
     </Fragment>
@@ -29,6 +30,7 @@ MovieRating.propTypes = {
     authKey: Types.string.isRequired,
   }).isRequired,
   onRateMovie: Types.func.isRequired,
+  onNextMovie: Types.func.isRequired,
   ratingMovie: Types.bool.isRequired,
 };
 

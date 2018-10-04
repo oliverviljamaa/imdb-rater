@@ -19,6 +19,7 @@ describe('Main', () => {
         onChangeCookie={jest.fn()}
         onLoadMoviesClick={jest.fn()}
         onRateMovie={jest.fn()}
+        onNextMovie={jest.fn()}
       />,
     );
   });
@@ -92,6 +93,12 @@ describe('Main', () => {
 
         component.setProps({ ratingMovie: true });
         expect(movieRating().prop('ratingMovie')).toBe(true);
+      });
+
+      it('gets passed next movie handler', () => {
+        const onNextMovie = jest.fn();
+        component.setProps({ onNextMovie });
+        expect(movieRating().prop('onNextMovie')).toBe(onNextMovie);
       });
     });
 
