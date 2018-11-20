@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, StrictMode } from 'react';
 
 import { loadCookie, saveCookie } from './storage/local';
 import getMovies from './api/movies';
@@ -19,11 +19,7 @@ export default class App extends Component {
   };
 
   componentWillMount() {
-    const { cookie } = this.state;
-
-    if (cookie) {
-      this.loadMovies();
-    }
+    this.loadMoviesIfCookieExists();
   }
 
   setCookie = cookie => {
@@ -53,6 +49,14 @@ export default class App extends Component {
     this.setState({ moviesToRate });
   };
 
+  loadMoviesIfCookieExists() {
+    const { cookie } = this.state;
+
+    if (cookie) {
+      this.loadMovies();
+    }
+  }
+
   async loadMovies() {
     const { cookie } = this.state;
 
@@ -70,7 +74,7 @@ export default class App extends Component {
     const movie = moviesToRate[0];
 
     return (
-      <Fragment>
+      <StrictMode>
         <Header />
         <Main
           cookie={cookie}
@@ -83,7 +87,7 @@ export default class App extends Component {
           onRateMovie={this.rateAndRemoveMovie}
           onNextMovie={this.removeFirstMovieFromMovies}
         />
-      </Fragment>
+      </StrictMode>
     );
   }
 }
