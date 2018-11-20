@@ -1,4 +1,4 @@
-import React, { Component, StrictMode } from 'react';
+import React, { StrictMode, useState, useEffect } from 'react';
 
 import { loadCookie, saveCookie } from './storage/local';
 import getMovies from './api/movies';
@@ -9,85 +9,71 @@ import Main from './Main';
 
 const AMOUNT_OF_MOVIES = 100;
 
-export default class App extends Component {
-  state = {
-    cookie: loadCookie() || '',
-    loadingMovies: false,
-    moviesToRate: [],
-    ratingMovie: false,
-    error: null,
-  };
+function App() {
+  const [cookie, setCookie] = useState(loadCookie() || '');
+  const [loadingMovies, setLoadingMovies] = useState(false);
+  const [moviesToRate, setMoviesToRate] = useState([]);
+  const [ratingMovie, setRatingMovie] = useState(false);
+  const [error, setError] = useState(null);
 
-  componentWillMount() {
-    this.loadMoviesIfCookieExists();
-  }
-
-  setCookie = cookie => {
-    this.setState({ cookie });
-  };
-
-  rateAndRemoveMovie = async (id, rating, authKey) => {
-    const { cookie } = this.state;
-
-    this.setState({ ratingMovie: true });
-    await rateMovie(id, rating, authKey, cookie);
-    this.removeFirstMovieFromMovies();
-    this.setState({ ratingMovie: false });
-  };
-
-  loadMoviesAndSaveCookie = () => {
-    const { cookie } = this.state;
-
-    this.loadMovies();
+  const loadMoviesAndSaveCookie = () => {
+    loadMovies();
     saveCookie(cookie);
   };
 
-  removeFirstMovieFromMovies = () => {
-    const { moviesToRate: currentMoviesToRate } = this.state;
-
-    const [, ...moviesToRate] = currentMoviesToRate;
-    this.setState({ moviesToRate });
+  const loadMovies = async () => {
+    setLoadingMovies(true);
+    try {
+      const movies = await getMovies(AMOUNT_OF_MOVIES, cookie);
+      setLoadingMovies(false);
+      setMoviesToRate(movies);
+      setError(null);
+    } catch (e) {
+      setLoadingMovies(false);
+      setError(e.message);
+    }
   };
 
-  loadMoviesIfCookieExists() {
-    const { cookie } = this.state;
+  const rateAndRemoveMovie = async (id, rating, authKey) => {
+    setRatingMovie(true);
+    await rateMovie(id, rating, authKey, cookie);
+    removeFirstMovieFromMovies();
+    setRatingMovie(false);
+  };
 
+  const removeFirstMovieFromMovies = () => {
+    const [, ...newMoviesToRate] = moviesToRate;
+    setMoviesToRate(newMoviesToRate);
+  };
+
+  useEffect(() => {
+    loadMoviesIfCookieExists();
+  }, []);
+
+  const loadMoviesIfCookieExists = () => {
     if (cookie) {
-      this.loadMovies();
+      loadMovies();
     }
-  }
+  };
 
-  async loadMovies() {
-    const { cookie } = this.state;
+  const movie = moviesToRate[0];
 
-    this.setState({ loadingMovies: true });
-    try {
-      const moviesToRate = await getMovies(AMOUNT_OF_MOVIES, cookie);
-      this.setState({ loadingMovies: false, moviesToRate, error: null });
-    } catch (error) {
-      this.setState({ loadingMovies: false, error: error.message });
-    }
-  }
-
-  render() {
-    const { cookie, loadingMovies, moviesToRate, ratingMovie, error } = this.state;
-    const movie = moviesToRate[0];
-
-    return (
-      <StrictMode>
-        <Header />
-        <Main
-          cookie={cookie}
-          loadingMovies={loadingMovies}
-          movie={movie}
-          ratingMovie={ratingMovie}
-          error={error}
-          onChangeCookie={this.setCookie}
-          onLoadMoviesClick={this.loadMoviesAndSaveCookie}
-          onRateMovie={this.rateAndRemoveMovie}
-          onNextMovie={this.removeFirstMovieFromMovies}
-        />
-      </StrictMode>
-    );
-  }
+  return (
+    <StrictMode>
+      <Header />
+      <Main
+        cookie={cookie}
+        loadingMovies={loadingMovies}
+        movie={movie}
+        ratingMovie={ratingMovie}
+        error={error}
+        onChangeCookie={setCookie}
+        onLoadMoviesClick={loadMoviesAndSaveCookie}
+        onRateMovie={rateAndRemoveMovie}
+        onNextMovie={removeFirstMovieFromMovies}
+      />
+    </StrictMode>
+  );
 }
+
+export default App;
